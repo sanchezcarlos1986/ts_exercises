@@ -1,5 +1,5 @@
 import List from "./linked-lists";
-import type { INode } from "./linked-lists";
+import type { NodeType } from "./linked-lists";
 
 describe("Linked List", () => {
   const list = new List();
@@ -27,10 +27,10 @@ describe("Linked List", () => {
     list.push(3);
     list.push(4);
 
-    const expectedNodeC: INode = { data: 4, next: null };
-    const expectedNodeB: INode = { data: 3, next: expectedNodeC };
-    const expectedNodeA: INode = { data: 2, next: expectedNodeB };
-    const expectedHead: INode = { data: 1, next: expectedNodeA };
+    const expectedNodeC: NodeType = { data: 4, next: null };
+    const expectedNodeB: NodeType = { data: 3, next: expectedNodeC };
+    const expectedNodeA: NodeType = { data: 2, next: expectedNodeB };
+    const expectedHead: NodeType = { data: 1, next: expectedNodeA };
 
     expect(list.head).toEqual(expectedHead);
     expect(list.last).toEqual(expectedNodeC);

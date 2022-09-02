@@ -1,5 +1,7 @@
 class Nodo {
-  constructor(data) {
+  data: number;
+  next: NodeType;
+  constructor(data: number) {
     this.data = data;
     this.next = null;
   }
@@ -10,82 +12,70 @@ export type NodeType = {
   next: NodeType;
 } | null;
 
-export default class List {
-  public head: NodeType;
-  public last: NodeType;
-
-  constructor() {
-    this.head = null;
-    this.last = null;
+export class LinkedList {
+  head: NodeType;
+  tail: NodeType;
+  length: number;
+  constructor(value: number) {
+    const newNode: NodeType = new Nodo(value);
+    this.head = newNode;
+    this.tail = newNode;
+    this.length = 1;
   }
 
-  push(data: number): void {
-    const nodo = new Nodo(data);
-
-    if (this.head === null) {
-      this.head = nodo;
+  unshift(value: number) {
+    const newNode: NodeType = new Nodo(value);
+    if (!this.head) {
+      this.head = newNode;
+      this.tail = newNode;
     } else {
-      this.last.next = nodo;
+      const currentHead = this.head;
+      this.head = newNode;
+      this.head?.next = currentHead;
     }
-
-    this.last = nodo;
+    this.length++;
+    return this;
   }
 
-  print(): void {
-    let aux = this.head;
-
-    while (aux) {
-      console.log(aux.data);
-      aux = aux.next;
-    }
+  shift() {
+    const currentHead = this.head;
+    this.head = currentHead?.next;
+    this.length--;
+    return this;
   }
 
-  getLastElement(): NodeType {
-    let aux = this.head;
-
-    while (aux?.next) {
-      aux = aux.next;
+  push(value: number) {
+    const newNode: NodeType = new Nodo(value);
+    if (!this.head) {
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      this.tail.next = newNode;
+      this.tail = newNode;
     }
-
-    return aux;
+    this.length++;
+    return this;
   }
 
-  getElementByIndex(index: number): NodeType {
-    let aux = this.head;
-    let currentIndex = 0;
-
-    while (currentIndex !== index) {
-      aux = aux?.next;
-      currentIndex++;
+  pop() {
+    if (!this.head || !this.tail || !this.head?.next) {
+      return this;
     }
 
-    return aux;
-  }
+    let pre = this.head;
+    let temp = this.head;
 
-  find(element: number): NodeType {
-    let aux = this.head;
+    while (temp.next) {
+      pre = temp;
+      temp = temp.next;
 
-    while (aux.data !== element) {
-      aux = aux?.next;
+      if (!temp?.next) {
+        this.tail = pre;
+        this.tail.next = null;
+      }
     }
 
-    return aux;
-  }
-
-  deleteByNode(element: number) {
-    let aux = this.head;
-
-    // if (!aux) return null
-
-    if (aux.data === element) {
-      this.head = aux.next;
-      return;
-    }
-
-    while (aux?.next?.data !== element) {
-      aux = aux?.next;
-    }
-
-    aux.next = aux.next.next;
+    this.length--;
+    return this;
   }
 }
